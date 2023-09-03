@@ -23,7 +23,7 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     // suppress errors for missing 'import React' in files
-    'import/no-absolute-path': 'warn',
+    'import/no-absolute-path': 'off',
     'react/react-in-jsx-scope': 'off',
     // suppress bug from strictNullChecks in tsconfig,
     '@typescript-eslint/no-floating-promises': 'warn',
