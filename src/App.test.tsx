@@ -1,4 +1,4 @@
-import { render, screen, userEvent, waitFor } from '@testing';
+import { render, screen, userEvent } from '@testing';
 import App from '@app';
 
 describe('App', () => {
@@ -12,9 +12,7 @@ describe('App', () => {
   it('renders the correct count', async () => {
     render(<App />);
     const clickBtn = screen.getByText(/count is/i);
-    userEvent.click(clickBtn);
-    await waitFor(() => {
-      expect(clickBtn.textContent).toBe('count is 1');
-    });
+    await userEvent.click(clickBtn);
+    expect(clickBtn.textContent).toBe('count is 1');
   });
 });
