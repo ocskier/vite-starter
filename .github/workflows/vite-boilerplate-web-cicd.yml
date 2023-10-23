@@ -1,0 +1,116 @@
+name: Build and deploy app artifacts thru Github pipelines
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  dev:
+    name: QA
+    environment: QA
+    runs-on: [linux, x64]
+    env:
+      HTTPS: ${{secrets.HTTPS}}
+      REACT_APP_ENV: ${{secrets.REACT_APP_ENV}}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js env
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          check-latest: true
+
+      - name: Inject env vars
+        if: env.REACT_APP_ENV
+        run: echo Injected environment variables
+
+      - name: npm install
+        run: |
+          npm ci
+
+      - name: npm build
+        run: |
+          npm run build
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: qa-build
+          path: ./dist
+
+  qa:
+    name: Staging
+    environment: Staging
+    runs-on: [linux, x64]
+    env:
+      HTTPS: ${{secrets.HTTPS}}
+      REACT_APP_ENV: ${{secrets.REACT_APP_ENV}}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js env
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          check-latest: true
+
+      - name: Inject env vars
+        if: env.REACT_APP_ENV
+        run: echo Injected environment variables
+
+      - name: npm install
+        run: |
+          npm ci
+
+      - name: npm build
+        run: |
+          npm run build
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: staging-build
+          path: ./dist
+
+  prod:
+    name: PROD
+    environment: PROD
+    runs-on: [linux, X64]
+    env:
+      HTTPS: ${{secrets.HTTPS}}
+      REACT_APP_ENV: ${{secrets.REACT_APP_ENV}}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js env
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          check-latest: true
+
+      - name: Inject env vars
+        if: env.REACT_APP_ENV
+        run: echo Injected environment variables
+
+      - name: npm install
+        run: |
+          npm ci
+
+      - name: npm build
+        run: |
+          npm run build
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: prod-build
+          path: ./dist
+
+  # deploy:
+  #   name: Deploy to Somewhere
