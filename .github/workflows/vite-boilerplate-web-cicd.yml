@@ -10,7 +10,7 @@ jobs:
   dev:
     name: QA
     environment: QA
-    runs-on: [linux, x64]
+    runs-on: [ubuntu-latest]
     env:
       HTTPS: ${{secrets.HTTPS}}
       REACT_APP_ENV: ${{secrets.REACT_APP_ENV}}
@@ -45,7 +45,7 @@ jobs:
   qa:
     name: Staging
     environment: Staging
-    runs-on: [linux, x64]
+    runs-on: [ubuntu-latest]
     env:
       HTTPS: ${{secrets.HTTPS}}
       REACT_APP_ENV: ${{secrets.REACT_APP_ENV}}
@@ -80,7 +80,7 @@ jobs:
   prod:
     name: PROD
     environment: PROD
-    runs-on: [linux, X64]
+    runs-on: [ubuntu-latest]
     env:
       HTTPS: ${{secrets.HTTPS}}
       REACT_APP_ENV: ${{secrets.REACT_APP_ENV}}
